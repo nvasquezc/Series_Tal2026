@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "Si utiliza este trabajo, por favor cítelo así."
+title: "Pronóstico de las ventas reales del comercio minorista en Colombia: análisis comparativo de modelos de series de tiempo"
+type: software
+authors:
+  - family-names: "Ballén"
+    given-names: "Jhon J."
+    email: jballena@ucentral.edu.co
+    affiliation: "Universidad Central"
+  - family-names: "Orjuela"
+    given-names: "David F."
+    email: dorjuelah@ucentral.edu.co
+    affiliation: "Universidad Central"
+  - family-names: "Vásquez"
+    given-names: "Néstor O."
+    email: nvasquezc@ucentral.edu.co
+    affiliation: "Universidad Central"
+repository-code: "https://github.com/nvasquezc/Series_Tal2026"
+license: MIT
+date-released: "2026-10-23"
+keywords:
+  - series de tiempo
+  - pronóstico
+  - comercio minorista
+  - SARIMA
+  - Holt-Winters
+  - Prophet
+  - DANE

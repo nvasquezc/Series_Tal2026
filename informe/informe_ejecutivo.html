@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ventas Minoristas 2026–2027</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: informe de una columna (máx. 1080px) que alterna bandas de lectura y bandas de gráficos;
+   las cifras van en mono tabular, como en un boletín estadístico. */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#111418; --ink-2:#4f5663; --ink-3:#7b8290;
+  --rule:#e1e4ea; --grid:#eceef2;
+  --accent:#2a78d6; --accent-soft:rgba(42,120,214,.16); --accent-softer:rgba(42,120,214,.08);
+  --sarima:#2a78d6; --hw:#eb6834; --prophet:#1baf7a; --naive:#eda100;
+  --pos:#2a78d6; --neg:#e34948; --mid:#f0efec; --real:#e34948;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111317; --surface:#1a1d22; --ink:#eef0f3; --ink-2:#b4bac5; --ink-3:#8a919d;
+  --rule:#2b3038; --grid:#252a31;
+  --accent:#3987e5; --accent-soft:rgba(57,135,229,.26); --accent-softer:rgba(57,135,229,.13);
+  --sarima:#3987e5; --hw:#d95926; --prophet:#199e70; --naive:#c98500;
+  --pos:#3987e5; --neg:#e66767; --mid:#383835; --real:#e66767; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111317; --surface:#1a1d22; --ink:#eef0f3; --ink-2:#b4bac5; --ink-3:#8a919d;
+  --rule:#2b3038; --grid:#252a31;
+  --accent:#3987e5; --accent-soft:rgba(57,135,229,.26); --accent-softer:rgba(57,135,229,.13);
+  --sarima:#3987e5; --hw:#d95926; --prophet:#199e70; --naive:#c98500;
+  --pos:#3987e5; --neg:#e66767; --mid:#383835; --real:#e66767; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+
+/* Cabecera */
+header.top{padding-top:36px;display:grid;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:26px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--ink-2)}
+.meta span b{font-weight:600;color:var(--ink)}
+h1{font-size:clamp(30px,4.6vw,46px);font-weight:800;line-height:1.08;max-width:22ch}
+.lede{font-size:18px;color:var(--ink-2);max-width:66ch}
+.lede strong{color:var(--ink)}
+
+/* Cifras clave */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;display:grid;gap:4px;align-content:start}
+.kpi .lab{font-size:13px;color:var(--ink-2);line-height:1.35;min-height:2.7em}
+.kpi .val{font-family:var(--display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .val.acc{color:var(--accent)}
+.kpi .sub{font-size:12.5px;color:var(--ink-3);font-family:var(--mono)}
+
+/* Bloques */
+section.block{display:grid;gap:16px;min-width:0}
+section.block>*,.wrap>*{min-width:0}
+.head{display:grid;gap:6px;max-width:72ch}
+h2{font-size:24px;font-weight:700}
+.head p{color:var(--ink-2)}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:20px 20px 14px}
+.panel h3{font-size:16px;font-weight:700}
+.panel .note{font-size:13px;color:var(--ink-3);margin-top:2px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.grid2>*{min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-2);margin-top:10px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.line{height:3px;border-radius:2px;vertical-align:3px}
+.legend i.dia{width:10px;height:10px;transform:rotate(45deg);border:2px solid var(--real);background:var(--surface);border-radius:1px}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.src{font-size:12px;color:var(--ink-3);margin-top:8px}
+
+/* Tooltip */
+.tip{position:absolute;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--rule);
+  border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.45;box-shadow:0 6px 18px rgba(0,0,0,.12);min-width:150px;z-index:5}
+.tip b{font-family:var(--display);font-size:13px}
+.tip .r{display:flex;justify-content:space-between;gap:14px}
+.tip .r span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hallazgos */
+.findings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.finding{border-top:3px solid var(--fc,var(--accent));background:var(--surface);border-radius:0 0 10px 10px;padding:16px 18px;display:grid;gap:8px;align-content:start;border-left:1px solid var(--rule);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.finding h3{font-size:16px}
+.finding p{font-size:14.5px;color:var(--ink-2)}
+.chip{justify-self:start;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--accent-softer);color:var(--accent)}
+.chip.warn{background:rgba(227,73,72,.12);color:var(--neg)}
+.chip.neutral{background:var(--grid);color:var(--ink-2)}
+
+/* Tabla */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--grid)}
+th{font-family:var(--mono);font-weight:500;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+td:first-child{font-family:var(--body);font-weight:500}
+tr.best td{font-weight:600}
+tr.best td:first-child::after{content:"elegido";margin-left:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:999px;background:var(--accent-softer);color:var(--accent);vertical-align:1px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:0}
+
+/* Recomendaciones */
+.recs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rec{display:grid;align-content:start;grid-template-columns:auto 1fr;gap:4px 14px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:16px 18px}
+.rec .k{grid-row:span 2;font-family:var(--display);font-weight:800;font-size:22px;color:var(--accent);line-height:1.2;min-width:1.4em}
+.rec h3{font-size:16px}
+.rec p{font-size:14.5px;color:var(--ink-2)}
+.limits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.limit{border-left:2px solid var(--rule);padding:2px 0 2px 14px;display:grid;gap:4px;align-content:start}
+.limit h3{font-size:15px}
+.limit p{font-size:14px;color:var(--ink-2)}
+footer{border-top:1px solid var(--rule);padding-top:18px;font-size:13px;color:var(--ink-3);display:grid;gap:6px}
+footer a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.findings,.limits{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.recs{grid-template-columns:1fr}}
+@media (max-width:520px){.kpis,.findings,.limits{grid-template-columns:1fr}.kpi .lab{min-height:0}h2{font-size:21px}}
+</style>
+</head><body>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Informe ejecutivo · Encuesta Mensual de Comercio (DANE) · Octubre de 2026</div>
+  <h1>¿Cuánto venderá el comercio minorista colombiano en el próximo año?</h1>
+  <p class="lede">El modelo seleccionado anticipa una <strong>temporada de fin de año un 5,3&nbsp;% más fuerte que la de 2025</strong>, en términos reales. Para el conjunto de los próximos doce meses el crecimiento esperado es más moderado, <strong>+2,3&nbsp;%</strong>, porque el primer semestre de 2027 se compara con un 2026 excepcionalmente alto.</p>
+  <div class="meta">
+    <span><b>Autores:</b> Jhon J. Ballén · David F. Orjuela · Néstor O. Vásquez</span>
+    <span><b>Docente:</b> Wilson Sandoval Rodríguez</span>
+    <span><b>Maestría en Analítica de Datos</b> · Universidad Central</span>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="lab">Índice esperado para diciembre de 2026</div><div class="val acc num">176,8</div><div class="sub">IC 80 %: 166,8 – 187,4</div></div>
+  <div class="kpi"><div class="lab">Crecimiento frente a diciembre de 2025</div><div class="val acc num">+5,3 %</div><div class="sub">rango 80 %: −0,7 % a +11,6 %</div></div>
+  <div class="kpi"><div class="lab">Error medio del modelo en el año de prueba</div><div class="val num">3,9 %</div><div class="sub">referencia ingenua: 9,1 %</div></div>
+  <div class="kpi"><div class="lab">Desvío en agosto de 2026, ya publicado</div><div class="val num">0,44 %</div><div class="sub">real 138,4 · pronóstico 137,8</div></div>
+</div>
+
+<section class="block" id="pronostico">
+  <div class="head">
+    <div class="eyebrow">1 · El pronóstico</div>
+    <h2>Agosto de 2026 a julio de 2027</h2>
+    <p>Índice de ventas reales del comercio minorista sin vehículos (base 2019 = 100). La línea azul es el pronóstico; las franjas muestran dónde caerían las ventas con 80 % y 95 % de probabilidad. Pase el cursor sobre la gráfica para ver cada mes.</p>
+  </div>
+  <div class="panel">
+    <div class="chart" id="c-forecast"></div>
+    <div class="legend">
+      <span><i class="line" style="background:var(--ink)"></i>Ventas observadas</span>
+      <span><i class="line" style="background:var(--accent)"></i>Pronóstico</span>
+      <span><i style="background:var(--accent-soft)"></i>Rango 80 %</span>
+      <span><i style="background:var(--accent-softer)"></i>Rango 95 %</span>
+      <span><i class="dia"></i>Dato real de agosto de 2026</span>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Variación frente al mismo mes del año anterior</h3>
+    <p class="note">Dos tramos: crecimiento que se modera hasta febrero y variaciones cercanas a cero de marzo a julio de 2027.</p>
+    <div class="chart" id="c-yoy"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="head">
+    <div class="eyebrow">2 · Cómo leerlo</div>
+    <h2>Tres mensajes para la planeación</h2>
+  </div>
+  <div class="findings">
+    <div class="finding"><span class="chip">Temporada fuerte</span><h3>Diciembre crecería cerca de 5 %</h3><p>El valor central apunta a un volumen 5,3 % mayor que en 2025. El límite inferior del rango del 80 % queda casi en el nivel del año pasado: una temporada más débil es poco probable, aunque no descartable.</p></div>
+    <div class="finding" style="--fc:var(--naive)"><span class="chip neutral">Base alta</span><h3>2027 arranca contra un 2026 récord</h3><p>Las variaciones casi nulas de marzo a julio no son una señal de recesión. El modelo trata las ventas excepcionales de 2026 como transitorias; si ese impulso persiste, las ventas superarán el pronóstico.</p></div>
+    <div class="finding" style="--fc:var(--neg)"><span class="chip warn">Riesgo</span><h3>Los modelos subestiman las aceleraciones</h3><p>En el año de prueba las ventas crecieron cerca de 10 % y todos los métodos se quedaron cortos, en la misma dirección. Sin información económica externa, ningún modelo de este tipo anticipa un cambio de ritmo.</p></div>
+  </div>
+</section>
+
+<section class="block" id="modelos">
+  <div class="head">
+    <div class="eyebrow">3 · Por qué confiar en este modelo</div>
+    <h2>Cuatro métodos, evaluados con datos que no habían visto</h2>
+    <p>Cada método se estimó con datos hasta julio de 2025 y se comparó con lo que realmente se vendió entre agosto de 2025 y julio de 2026. La métrica principal, el MASE, compara el error de cada método con el de la referencia ingenua (repetir el mismo mes del año anterior): un valor menor que 1 significa que el método se equivoca menos.</p>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Error en el año de prueba (MASE)</h3>
+      <p class="note">Menor es mejor. La línea punteada marca el error típico de la referencia.</p>
+      <div class="chart" id="c-mase"></div>
+    </div>
+    <div class="panel">
+      <h3>¿La ventaja se sostiene en otros años?</h3>
+      <p class="note">MASE de cada pronóstico a 12 meses según el mes en que se hizo.</p>
+      <div class="chart" id="c-origins"></div>
+      <div class="legend" id="lg-origins"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Desempeño detallado en el año de prueba</h3>
+    <p class="note">MAE y sesgo en puntos del índice. Un sesgo positivo indica que el método pronosticó menos de lo que realmente se vendió.</p>
+    <div class="tablewrap" style="margin-top:10px">
+      <table>
+        <thead><tr><th>Método</th><th>Error medio (%)</th><th>MAE</th><th>MASE</th><th>Sesgo</th><th>Cobertura 95 %</th><th>Meses que gana a la referencia</th><th>MASE promedio 6 años</th></tr></thead>
+        <tbody>
+          <tr class="best"><td><span class="sw" style="background:var(--sarima)"></span>SARIMA</td><td>3,95</td><td>5,33</td><td>0,76</td><td>+5,04</td><td>100 %</td><td>11 / 12</td><td>0,61</td></tr>
+          <tr><td><span class="sw" style="background:var(--hw)"></span>Holt-Winters</td><td>4,48</td><td>6,04</td><td>0,86</td><td>+5,68</td><td>100 %</td><td>10 / 12</td><td>0,73</td></tr>
+          <tr><td><span class="sw" style="background:var(--prophet)"></span>Prophet</td><td>6,61</td><td>8,94</td><td>1,27</td><td>+8,94</td><td>67 %</td><td>11 / 12</td><td>0,66</td></tr>
+          <tr><td><span class="sw" style="background:var(--naive)"></span>Referencia ingenua</td><td>9,14</td><td>12,32</td><td>1,76</td><td>+12,32</td><td>100 %</td><td>—</td><td>1,01</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Error mes a mes en el año de prueba</h3>
+    <p class="note">Ventas reales menos pronóstico, en puntos del índice. Rojo: el método se quedó corto; azul: se pasó. 44 de las 48 celdas son rojas.</p>
+    <div class="chart" id="c-heat" style="overflow-x:auto"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="head">
+    <div class="eyebrow">4 · Recomendaciones</div>
+    <h2>Qué hacer con este pronóstico</h2>
+  </div>
+  <div class="recs">
+    <div class="rec"><span class="k">A</span><h3>Planear con un rango, no con un número</h3><p>Usar el valor central (cerca de +5 %) como referencia de compra. Si quedarse sin inventario cuesta más que tener excedentes, planear hacia el límite superior del rango del 80 % (cerca de +12 %).</p></div>
+    <div class="rec"><span class="k">B</span><h3>Revisar el primer semestre de 2027</h3><p>El crecimiento casi nulo proyectado depende de que el impulso de 2026 haya sido pasajero. Conviene contrastarlo con los datos de los próximos meses antes de comprometer compras.</p></div>
+    <div class="rec"><span class="k">C</span><h3>Actualizar cada mes</h3><p>Volver a estimar el modelo con cada publicación del DANE. Basta con cambiar la versión del anexo en el cuaderno del proyecto y ejecutarlo de nuevo.</p></div>
+    <div class="rec"><span class="k">D</span><h3>Incorporar información económica</h3><p>Tasas de interés, inflación, confianza del consumidor y calendario (días sin IVA, Semana Santa) son las variables que explican los cambios de ritmo que la historia de ventas no anticipa.</p></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="head">
+    <div class="eyebrow">5 · Alcance</div>
+    <h2>Lo que el pronóstico no puede ver</h2>
+  </div>
+  <div class="limits">
+    <div class="limit"><h3>Solo historia de ventas</h3><p>No incluye ingresos, empleo, tasas ni confianza del consumidor.</p></div>
+    <div class="limit"><h3>Calendario</h3><p>En 2027 la Semana Santa cae en marzo y puede mover ventas entre marzo y abril.</p></div>
+    <div class="limit"><h3>Choques extremos</h3><p>Ante un evento como el confinamiento de 2020 (−39 % anual), ningún rango histórico alcanza.</p></div>
+    <div class="limit"><h3>Datos provisionales</h3><p>El DANE revisa las cifras recientes; la revisión de julio de 2026 fue de 0,01 puntos.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div><b>Fuente:</b> DANE, Encuesta Mensual de Comercio, anexo de series empalmadas, hoja 1.2 («Total comercio minorista sin otros vehículos»), versiones de julio y agosto de 2026. Cálculos propios.</div>
+  <div><b>Modelo:</b> SARIMA(1,0,1)×(0,1,1)<sub>12</sub> sobre el logaritmo del índice, con variables de intervención para abril y mayo de 2020 y mayo de 2021, reestimado con 163 meses (enero de 2013 a julio de 2026).</div>
+  <div>Metodología completa, datos y código: <a href="https://github.com/nvasquezc/Series_Tal2026" target="_blank" rel="noopener">github.com/nvasquezc/Series_Tal2026</a></div>
+</footer>
+</div>
+
+<script>
+(function(){
+const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const fmt=(v,d=1)=>v.toFixed(d).replace(".",",");
+const sgn=(v,d=1)=>(v>0?"+":v<0?"−":"")+fmt(Math.abs(v),d);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function txt(parent,x,y,s,attrs){const t=el("text",Object.assign({x,y,fill:"var(--ink-2)","font-size":12,"font-family":"var(--body)"},attrs||{}),parent);t.textContent=s;return t}
+function svgIn(id,w,h){const box=document.getElementById(id);const s=el("svg",{viewBox:`0 0 ${w} ${h}`,role:"img"},box);return {box,s}}
+function tipFor(box){const t=document.createElement("div");t.className="tip";t.hidden=true;box.appendChild(t);return t}
+function placeTip(tip,box,px,py){const bw=box.clientWidth;tip.hidden=false;const tw=tip.offsetWidth;let x=px+14;if(x+tw>bw)x=px-tw-14;if(x<0)x=0;tip.style.left=x+"px";tip.style.top=Math.max(0,py-10)+"px"}
+
+/* ---------- Datos ---------- */
+const obs=[111.7,104.5,113.6,106.7,113.2,109.8,113.7,112.0,110.9,110.6,118.6,142.4,108.2,104.8,108.1,105.6,110.4,110.2,114.9,117.5,111.7,118.3,128.6,153.9,118.5,112.0,121.5,116.4,125.3,120.9,131.8,131.1,126.1,129.3,138.6,167.9,128.1,123.4,136.3,130.7,139.7,134.9,138.1];
+const fc=[[137.8,132.2,143.7,129.3,146.9,5.2],[134.4,128.0,141.0,124.8,144.7,6.5],[138.8,131.6,146.3,128.0,150.4,7.3],[144.1,136.3,152.4,132.3,156.9,3.9],[176.8,166.8,187.4,161.7,193.2,5.3],[132.1,124.5,140.3,120.6,144.8,3.1],[126.7,119.2,134.7,115.4,139.1,2.7],[135.6,127.5,144.3,123.3,149.1,-0.5],[128.7,120.9,137.1,117.0,141.7,-1.5],[135.1,126.9,144.0,122.7,148.8,-3.3],[132.5,124.4,141.2,120.3,146.1,-1.7],[139.4,130.7,148.6,126.4,153.7,0.9]];
+const realAgo=138.44;
+const lab=i=>{const m=i%12,y=2023+Math.floor(i/12);return MES[m]+"-"+y};
+
+/* ---------- 1. Pronóstico ---------- */
+(function(){
+  const W=1000,H=400,m={l:44,r:20,t:34,b:34};
+  const {box,s}=svgIn("c-forecast",W,H);const tip=tipFor(box);
+  const n=obs.length+fc.length; // 55 meses desde ene-2023
+  const x=i=>m.l+i*(W-m.l-m.r)/(n-1);
+  const y0=95,y1=200,y=v=>m.t+(y1-v)*(H-m.t-m.b)/(y1-y0);
+  for(let v=100;v<=200;v+=20){el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:"var(--grid)","stroke-width":1},s);txt(s,m.l-8,y(v)+4,v,{"text-anchor":"end",fill:"var(--ink-3)","font-family":"var(--mono)","font-size":11})}
+  for(let i=0;i<n;i+=6){txt(s,x(i),H-m.b+20,lab(i),{"text-anchor":"middle",fill:"var(--ink-3)","font-size":11.5})}
+  el("line",{x1:m.l,x2:W-m.r,y1:H-m.b,y2:H-m.b,stroke:"var(--rule)"},s);
+  const k0=obs.length; // primer índice de pronóstico
+  // franja de pronóstico
+  el("rect",{x:x(k0-1),y:m.t,width:x(n-1)-x(k0-1),height:H-m.t-m.b,fill:"var(--accent-softer)",opacity:.35},s);
+  txt(s,x(k0-1)+8,H-m.b-10,"Pronóstico →",{fill:"var(--accent)","font-weight":600,"font-size":12});
+  const band=(lo,hi,fill)=>{let d=`M${x(k0-1)},${y(obs[k0-1])}`;fc.forEach((r,j)=>d+=`L${x(k0+j)},${y(r[hi])}`);for(let j=fc.length-1;j>=0;j--)d+=`L${x(k0+j)},${y(fc[j][lo])}`;d+="Z";el("path",{d,fill},s)};
+  band(3,4,"var(--accent-softer)");band(1,2,"var(--accent-soft)");
+  let d="";obs.forEach((v,i)=>d+=(i?"L":"M")+x(i)+","+y(v));
+  el("path",{d,fill:"none",stroke:"var(--ink)","stroke-width":2,"stroke-linejoin":"round"},s);
+  let d2=`M${x(k0-1)},${y(obs[k0-1])}`;fc.forEach((r,j)=>d2+=`L${x(k0+j)},${y(r[0])}`);
+  el("path",{d:d2,fill:"none",stroke:"var(--accent)","stroke-width":2.4,"stroke-linejoin":"round"},s);
+  fc.forEach((r,j)=>el("circle",{cx:x(k0+j),cy:y(r[0]),r:3.6,fill:"var(--accent)",stroke:"var(--surface)","stroke-width":1.6},s));
+  // dato real de agosto
+  const ax=x(k0),ay=y(realAgo);el("rect",{x:ax-6,y:ay-6,width:12,height:12,transform:`rotate(45 ${ax} ${ay})`,fill:"var(--surface)",stroke:"var(--real)","stroke-width":2.2},s);
+  // anotaciones
+  const dx=x(k0+4),dy=y(176.8);
+  el("line",{x1:dx,x2:dx,y1:dy-10,y2:m.t+4,stroke:"var(--ink-3)","stroke-width":1},s);
+  txt(s,dx-8,m.t+2,"dic-2026: 176,8",{"text-anchor":"end",fill:"var(--ink)","font-weight":700,"font-family":"var(--display)","font-size":13});
+  txt(s,dx-8,m.t+18,"+5,3 % frente a dic-2025",{"text-anchor":"end",fill:"var(--ink-2)","font-size":12});
+  const px=x(k0-8),py=y(167.9);
+  txt(s,px-10,py-4,"dic-2025: 167,9",{"text-anchor":"end",fill:"var(--ink-2)","font-size":12});
+  // interacción
+  const cross=el("line",{y1:m.t,y2:H-m.b,stroke:"var(--ink-3)","stroke-dasharray":"3 3",visibility:"hidden"},s);
+  const hit=el("rect",{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:"transparent"},s);
+  function show(ev){const r=s.getBoundingClientRect();const sx=(ev.clientX-r.left)*W/r.width;let i=Math.round((sx-m.l)/((W-m.l-m.r)/(n-1)));i=Math.max(0,Math.min(n-1,i));cross.setAttribute("x1",x(i));cross.setAttribute("x2",x(i));cross.setAttribute("visibility","visible");
+    let h=`<b>${lab(i)}</b>`;
+    if(i<k0){const pv=i>=12?obs[i-12]:null;h+=`<div class="r"><span>Observado</span><span>${fmt(obs[i])}</span></div>`;if(pv)h+=`<div class="r"><span>Var. anual</span><span>${sgn((obs[i]/pv-1)*100)} %</span></div>`}
+    else{const f=fc[i-k0];h+=`<div class="r"><span>Pronóstico</span><span>${fmt(f[0])}</span></div><div class="r"><span>Rango 80 %</span><span>${fmt(f[1])}–${fmt(f[2])}</span></div><div class="r"><span>Rango 95 %</span><span>${fmt(f[3])}–${fmt(f[4])}</span></div><div class="r"><span>Var. anual</span><span>${sgn(f[5])} %</span></div>`;if(i===k0)h+=`<div class="r"><span>Real publicado</span><span>${fmt(realAgo,2)}</span></div>`}
+    tip.innerHTML=h;placeTip(tip,box,x(i)*r.width/W,ev.clientY-r.top)}
+  hit.addEventListener("pointermove",show);hit.addEventListener("pointerleave",()=>{tip.hidden=true;cross.setAttribute("visibility","hidden")});
+})();
+
+/* ---------- 2. Variación anual ---------- */
+(function(){
+  const W=1000,H=230,m={l:44,r:20,t:24,b:30};
+  const {box,s}=svgIn("c-yoy",W,H);const tip=tipFor(box);
+  const n=12,bw=(W-m.l-m.r)/n,y0=-5,y1=9,y=v=>m.t+(y1-v)*(H-m.t-m.b)/(y1-y0);
+  for(let v=-4;v<=8;v+=4){el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:v===0?"var(--ink-3)":"var(--grid)","stroke-width":1},s);txt(s,m.l-8,y(v)+4,(v>0?"+":"")+v+" %",{"text-anchor":"end",fill:"var(--ink-3)","font-family":"var(--mono)","font-size":11})}
+  fc.forEach((r,j)=>{const v=r[5],cx=m.l+bw*j+bw/2,w=bw*0.56,top=v>=0?y(v):y(0),h=Math.abs(y(v)-y(0));
+    const col=v>=0?"var(--pos)":"var(--neg)";
+    el("rect",{x:cx-w/2,y:top,width:w,height:Math.max(h,1),rx:3,fill:col},s);
+    txt(s,cx,v>=0?y(v)-6:y(v)+15,sgn(v),{"text-anchor":"middle",fill:"var(--ink)","font-family":"var(--mono)","font-size":11.5});
+    const mi=(7+j)%12,yr=j<5?2026:2027;txt(s,cx,H-m.b+18,MES[mi]+(mi===0||j===0?"-"+String(yr).slice(2):""),{"text-anchor":"middle",fill:"var(--ink-3)","font-size":11.5});
+    const hit=el("rect",{x:m.l+bw*j,y:m.t,width:bw,height:H-m.t-m.b,fill:"transparent"},s);
+    hit.addEventListener("pointermove",ev=>{const rr=s.getBoundingClientRect();tip.innerHTML=`<b>${MES[mi]}-${yr}</b><div class="r"><span>Pronóstico</span><span>${fmt(r[0])}</span></div><div class="r"><span>Mismo mes año anterior</span><span>${fmt(r[0]/(1+v/100))}</span></div><div class="r"><span>Variación</span><span>${sgn(v)} %</span></div>`;placeTip(tip,box,cx*rr.width/W,ev.clientY-rr.top)});
+    hit.addEventListener("pointerleave",()=>tip.hidden=true)});
+})();
+
+/* ---------- 3. MASE en la prueba ---------- */
+const MOD=[["SARIMA","--sarima"],["Holt-Winters","--hw"],["Prophet","--prophet"],["Referencia ingenua","--naive"]];
+(function(){
+  const vals=[0.76,0.86,1.27,1.76];
+  const W=480,H=220,m={l:132,r:44,t:10,b:30};
+  const {box,s}=svgIn("c-mase",W,H);
+  const x=v=>m.l+v*(W-m.l-m.r)/2,bh=(H-m.t-m.b)/4;
+  for(let v=0;v<=2;v+=0.5){el("line",{x1:x(v),x2:x(v),y1:m.t,y2:H-m.b,stroke:"var(--grid)"},s);txt(s,x(v),H-m.b+18,fmt(v,1),{"text-anchor":"middle",fill:"var(--ink-3)","font-family":"var(--mono)","font-size":11})}
+  vals.forEach((v,i)=>{const cy=m.t+bh*i+bh/2;el("rect",{x:m.l,y:cy-bh*0.3,width:x(v)-m.l,height:bh*0.6,rx:3,fill:`var(${MOD[i][1]})`},s);
+    txt(s,m.l-10,cy+4,MOD[i][0],{"text-anchor":"end",fill:"var(--ink)","font-size":12.5,"font-weight":i===0?600:400});
+    txt(s,x(v)+6,cy+4,fmt(v,2),{fill:"var(--ink)","font-family":"var(--mono)","font-size":12})});
+  el("line",{x1:x(1),x2:x(1),y1:m.t-4,y2:H-m.b,stroke:"var(--ink-2)","stroke-dasharray":"4 3","stroke-width":1.2},s);
+})();
+
+/* ---------- 4. MASE por origen ---------- */
+(function(){
+  const orig=["jul-22","ene-23","jul-23","ene-24","jul-24","jul-25*"];
+  const D=[[0.52,0.69,0.78,0.35,0.56,0.76],[0.79,0.53,0.30,0.66,1.24,0.86],[0.53,0.51,0.65,0.37,0.64,1.27],[0.68,0.88,0.58,0.68,1.48,1.76]];
+  const avg=[0.61,0.73,0.66,1.01];
+  const W=480,H=230,m={l:36,r:16,t:12,b:30};
+  const {box,s}=svgIn("c-origins",W,H);const tip=tipFor(box);
+  const x=i=>m.l+i*(W-m.l-m.r)/5,y=v=>m.t+(1.9-v)*(H-m.t-m.b)/1.9;
+  el("rect",{x:x(4.5),y:m.t,width:x(5)-x(4.5)+12,height:H-m.t-m.b,fill:"var(--grid)",opacity:.7},s);
+  for(let v=0;v<=1.5;v+=0.5){el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:v===1?"var(--ink-2)":"var(--grid)","stroke-dasharray":v===1?"4 3":"0"},s);txt(s,m.l-6,y(v)+4,fmt(v,1),{"text-anchor":"end",fill:"var(--ink-3)","font-family":"var(--mono)","font-size":11})}
+  orig.forEach((o,i)=>txt(s,x(i),H-m.b+18,o,{"text-anchor":"middle",fill:"var(--ink-3)","font-size":11}));
+  [3,2,1,0].forEach(k=>{let d="";D[k].forEach((v,i)=>d+=(i?"L":"M")+x(i)+","+y(v));el("path",{d,fill:"none",stroke:`var(${MOD[k][1]})`,"stroke-width":k===0?2.6:1.8,"stroke-dasharray":k===3?"5 3":"0"},s);
+    D[k].forEach((v,i)=>el("circle",{cx:x(i),cy:y(v),r:k===0?4:3.2,fill:`var(${MOD[k][1]})`,stroke:"var(--surface)","stroke-width":1.5},s))});
+  orig.forEach((o,i)=>{const hit=el("rect",{x:x(i)-(W-m.l-m.r)/10,y:m.t,width:(W-m.l-m.r)/5,height:H-m.t-m.b,fill:"transparent"},s);
+    hit.addEventListener("pointermove",ev=>{const rr=s.getBoundingClientRect();tip.innerHTML=`<b>Origen ${o.replace("*"," (prueba)")}</b>`+MOD.map((md,k)=>`<div class="r"><span><span class="sw" style="background:var(${md[1]})"></span>${md[0]}</span><span>${fmt(D[k][i],2)}</span></div>`).join("");placeTip(tip,box,x(i)*rr.width/W,ev.clientY-rr.top)});
+    hit.addEventListener("pointerleave",()=>tip.hidden=true)});
+  document.getElementById("lg-origins").innerHTML=MOD.map((md,k)=>`<span><i class="line" style="background:var(${md[1]})"></i>${md[0]} <span class="num" style="color:var(--ink-3)">prom. ${fmt(avg[k],2)}</span></span>`).join("")+`<span style="color:var(--ink-3)">* origen de prueba</span>`;
+})();
+
+/* ---------- 5. Mapa de errores ---------- */
+(function(){
+  const E=[[1.74,-0.27,-1.48,3.08,1.27,3.69,4.05,8.85,9.77,12.9,10.2,6.65],[1.7,-0.51,-1.69,3.02,1.33,3.92,4.48,9.44,12.42,16.3,10.38,7.35],[7.72,5.15,3.64,7.66,7.17,7.51,7.44,11.91,11.63,14.28,13.25,9.94],[13.57,14.42,11.0,10.09,14.03,9.58,11.39,14.8,14.34,14.45,13.96,6.22]];
+  const mae=[5.33,6.04,8.94,12.32];
+  const W=1000,H=250,m={l:150,r:80,t:34,b:6},cw=(W-m.l-m.r)/12,ch=(H-m.t-m.b)/4;
+  const {box,s}=svgIn("c-heat",W,H);s.style.minWidth="640px";const tip=tipFor(box);
+  const mix=(v)=>{const a=Math.min(Math.abs(v)/16,1);return v>=0?`color-mix(in srgb, var(--neg) ${Math.round(a*85)}%, var(--mid))`:`color-mix(in srgb, var(--pos) ${Math.round(a*85+10)}%, var(--mid))`};
+  for(let j=0;j<12;j++){const mi=(7+j)%12,yr=j<5?"25":"26";txt(s,m.l+cw*j+cw/2,m.t-16,MES[mi],{"text-anchor":"middle",fill:"var(--ink-2)","font-size":12});txt(s,m.l+cw*j+cw/2,m.t-3,"’"+yr,{"text-anchor":"middle",fill:"var(--ink-3)","font-size":10.5,"font-family":"var(--mono)"})}
+  txt(s,W-m.r+12,m.t-6,"MAE",{fill:"var(--ink-3)","font-family":"var(--mono)","font-size":11});
+  E.forEach((row,i)=>{const cy=m.t+ch*i;txt(s,m.l-12,cy+ch/2+4,MOD[i][0],{"text-anchor":"end",fill:"var(--ink)","font-size":12.5,"font-weight":i===0?600:400});
+    row.forEach((v,j)=>{const cx=m.l+cw*j;const r=el("rect",{x:cx+1,y:cy+1,width:cw-2,height:ch-2,rx:3,fill:mix(v)},s);
+      txt(s,cx+cw/2,cy+ch/2+4,sgn(v),{"text-anchor":"middle",fill:Math.abs(v)>11?"#ffffff":"var(--ink)","font-family":"var(--mono)","font-size":11.5});
+      r.addEventListener("pointermove",ev=>{const rr=s.getBoundingClientRect();const mi=(7+j)%12,yr=j<5?2025:2026;tip.innerHTML=`<b>${MOD[i][0]} · ${MES[mi]}-${yr}</b><div class="r"><span>Error</span><span>${sgn(v,2)} pts</span></div><div class="r"><span>Lectura</span><span>${v>0?"se quedó corto":"se pasó"}</span></div>`;placeTip(tip,box,(ev.clientX-rr.left),ev.clientY-rr.top)});
+      r.addEventListener("pointerleave",()=>tip.hidden=true)});
+    txt(s,W-m.r+12,cy+ch/2+4,fmt(mae[i],1),{fill:"var(--ink)","font-family":"var(--mono)","font-size":12.5,"font-weight":600})});
+})();
+})();
+</script>
+</body></html>
